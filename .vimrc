@@ -68,7 +68,7 @@ set showmatch " Show matching braces.
 
 if has("win32") || has("win64")
    set guifont=Envy\ Code\ R:h13.5
-   let Tlist_Ctags_Cmd=~\.vim\tools\ctags\ctags.exe "TODO: make sure this works
+   let Tlist_Ctags_Cmd='c:\Users\minhajuddin\.vim\tools\ctags\ctags.exe' "TODO: make sure this works
    set directory=$TMP
    if !has("gui_running")
       colorscheme slate
