@@ -64,3 +64,23 @@ else
    let g:obviousModeInsertHi = "ctermfg=253 ctermbg=16"
 endif
 
+set modeline
+set wildchar=9 " tab as completion character
+
+set virtualedit=block
+set clipboard+=unnamed  " Yanks go on clipboard instead.
+set showmatch " Show matching braces.
+
+if has("win32") || has("win64")
+   set guifont=Envy\ Code\ R:h13.5
+   let Tlist_Ctags_Cmd=~\.vim\tools\ctags\ctags.exe "TODO: make sure this works
+   set directory=$TMP
+   if !has("gui_running")
+      colorscheme slate
+   end
+else
+   set directory=/tmp
+   set guifont=Envy\ Code\ R\ 16
+endif
+
+
