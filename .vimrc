@@ -4,6 +4,15 @@ set nocompatible
 "mapleader this is what is used for the special <leader>
 let mapleader=","
 
+"setting the runtime path
+set runtimepath=~/.vim,$VIMRUNTIME,~/.vim/after
+
+" enable clipboard and other Win32 features
+source $VIMRUNTIME/mswin.vim
+
+" appearance options
+colorscheme molokai
+
 " This shows what you are typing as a command. I love this!
 set showcmd
  
@@ -46,8 +55,12 @@ set incsearch
 set hlsearch
 
 " more additions
-set runtimepath=~/.vim,$VIMRUNTIME,~/.vim/after
-" enable clipboard and other Win32 features
-source $VIMRUNTIME/mswin.vim
-" appearance options
-colorscheme molokai
+if has("gui_running")
+   " No menus and no toolbar
+   set guioptions-=m
+   set guioptions-=T
+   let g:obviousModeInsertHi = "guibg=Black guifg=White"
+else
+   let g:obviousModeInsertHi = "ctermfg=253 ctermbg=16"
+endif
+
