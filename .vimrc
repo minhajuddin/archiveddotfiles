@@ -44,3 +44,10 @@ set incsearch
  
 " Highlight things that we find with the search
 set hlsearch
+
+" more additions
+set runtimepath=~/.vim,$VIMRUNTIME,~/.vim/after
+" enable clipboard and other Win32 features
+source $VIMRUNTIME/mswin.vim
+" appearance options
+colorscheme molokai
