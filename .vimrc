@@ -135,4 +135,6 @@ map <C-K><C-F> :Xmlpretty<CR>
 "
 noremap <C-E><C-E> :NERDTree<CR>
 noremap <C-E><C-C> :NERDTreeClose<CR>
+" disable warnings from NERDCommenter:
+let g:NERDShutUp = 1
 
