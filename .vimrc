@@ -5,7 +5,7 @@ set nocompatible
 let mapleader=","
 
 "setting the runtime path
-set runtimepath=~/.vim,$VIMRUNTIME,~/.vim/after
+set runtimepath=~\.vim,$VIMRUNTIME,~\.vim\after
 
 " enable clipboard and other Win32 features
 source $VIMRUNTIME/mswin.vim
