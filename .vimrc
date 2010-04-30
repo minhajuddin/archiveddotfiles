@@ -138,3 +138,10 @@ noremap <C-E><C-C> :NERDTreeClose<CR>
 " disable warnings from NERDCommenter:
 let g:NERDShutUp = 1
 
+" custom commands
+set autochdir "to change directory to the current files directory
+
+map <leader>rc :execute '!ruby %'<cr> "execute ruby code in the current buffer
+"rewrite this command when you know how to get the current line info => map <leader>rl :execute '!ruby -e \'\''<cr>
+map <leader>f gg=G<cr>
+
