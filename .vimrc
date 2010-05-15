@@ -12,7 +12,6 @@ source $VIMRUNTIME/mswin.vim
 
 " appearance options
 colorscheme molokai
-
 " This shows what you are typing as a command. I love this!
 set showcmd
  
@@ -67,7 +66,7 @@ set clipboard+=unnamed  " Yanks go on clipboard instead.
 set showmatch " Show matching braces.
 
 if has("win32") || has("win64")
-   set guifont=Envy\ Code\ R:h13.5
+   set guifont=Consolas:h13.5
    let Tlist_Ctags_Cmd='c:\Users\minhajuddin\.vim\tools\ctags\ctags.exe' "TODO: make sure this works
    set directory=$TMP
    if !has("gui_running")
@@ -75,7 +74,6 @@ if has("win32") || has("win64")
    end
 else
    set directory=/tmp
-   set guifont=Envy\ Code\ R\ 16
 endif
 
 
@@ -137,4 +135,60 @@ noremap <C-E><C-E> :NERDTree<CR>
 noremap <C-E><C-C> :NERDTreeClose<CR>
 " disable warnings from NERDCommenter:
 let g:NERDShutUp = 1
+map <Leader>f gg=G
 
+set lines=9999 columns=9999
+
+vmap <Leader>em :call ExtractMethod()<CR>
+function! ExtractMethod() range
+  let name = inputdialog("Name of new method:")
+  '<
+  exe "normal! O\<BS>private " . name ."()\<CR>{\<Esc>"
+  '>
+  exe "normal! oreturn ;\<CR>}\<Esc>k"
+  s/return/\/\/ return/ge
+  normal! j%
+  normal! kf(
+  exe "normal! yyPi// = \<Esc>wdwA;\<Esc>"
+  normal! ==
+  normal! j0w
+endfunction
+
+" makes CTRL-<ENTER> leave insert mode (like Esc)
+inoremap <C-space> <Esc>
+" shortcut for alt-tabbing buffers
+map <M-`> :b#<cr>
+imap <M-`> :b#<cr>
+
+" TODO ============== Get this working in the right way ==========
+" set any autocmds (make sure they are only set once)
+"if !exists("autocommands_loaded")
+  "let autocommands_loaded = 1
+  
+  " setup C# building
+  "autocmd BufNewFile,BufRead *.cs compiler devenv
+
+  " setup folding
+  "autocmd BufNewFile,BufRead *.cs set foldmethod=syntax
+"endif
+" setup integrated help
+"function! OnlineDoc()
+  "let s:wordUnderCursor = expand("<cword>")
+
+  "if &ft =~ "cs"
+    "let s:url = "http://social.msdn.microsoft.com/Search/en-US/?Refinement=26&Query=" . s:wordUnderCursor
+  "else
+    "execute "help " . s:wordUnderCursor
+    "return
+  "endif
+
+  "let s:browser = "\"C:\Users\kberridge\AppData\Local\Google\Chrome\Application\chrome.exe\""
+  "let s:cmd = "silent !start " . s:browser . " " . s:url
+
+  "execute s:cmd
+"endfunction
+
+"map <silent> <F1> :call OnlineDoc()<CR>
+"imap <silent> <F1> <ESC>:call OnlineDoc()<CR>
+
+" TODO ============== Get this working in the right way ==========
