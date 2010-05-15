@@ -54,6 +54,7 @@ if has("gui_running")
    set guioptions-=m
    set guioptions-=T
    let g:obviousModeInsertHi = "guibg=Black guifg=White"
+   set lines=9999 columns=9999
 else
    let g:obviousModeInsertHi = "ctermfg=253 ctermbg=16"
 endif
@@ -137,7 +138,6 @@ noremap <C-E><C-C> :NERDTreeClose<CR>
 let g:NERDShutUp = 1
 map <Leader>f gg=G
 
-set lines=9999 columns=9999
 
 vmap <Leader>em :call ExtractMethod()<CR>
 function! ExtractMethod() range
@@ -192,3 +192,7 @@ imap <M-`> :b#<cr>
 "imap <silent> <F1> <ESC>:call OnlineDoc()<CR>
 
 " TODO ============== Get this working in the right way ==========
+
+" custom commands
+map <leader>rc :execute '!ruby %'<cr> "execute ruby code in the current buffer
+"rewrite this command when you know how to get the current line info => map <leader>rl :execute '!ruby -e \'\''<cr>
