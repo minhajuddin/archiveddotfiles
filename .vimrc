@@ -92,17 +92,8 @@ set selectmode=key
 set encoding=utf8
 set fileencoding=utf8
 
-" tab navigation like firefox
-nmap <C-S-tab> :tabprevious<cr>
-nmap <C-tab> :tabnext<cr>
-map <C-S-tab> :tabprevious<cr>
-map <C-tab> :tabnext<cr>
-imap <C-S-tab> <ESC>:tabprevious<cr>i
-imap <C-tab> <ESC>:tabnext<cr>i
-nmap <Leader> tn :tabnew<cr>
 " Make sure taglist doesn't change the window size
 let g:Tlist_Inc_Winwidth = 0
-nnoremap <silent> <F8> :TlistToggle<CR>
 
 " set custom file types I've configured
 au BufNewFile,BufRead *.ps1  setf ps1
@@ -127,15 +118,9 @@ filetype plugin indent on
 "xmlpretty
 runtime xmlpretty.vim
 command! -range=% Xmlpretty :call XmlPretty(<line1>, <line2>)
-map <C-K><C-F> :Xmlpretty<CR>
-
 " disable warnings from NERDCommenter:
 let g:NERDShutUp = 1
 
-map <leader>rc :execute '!ruby %'<cr> "execute ruby code in the current buffer
-"rewrite this command when you know how to get the current line info => map <leader>rl :execute '!ruby -e \'\''<cr>
-map <leader>f gg=G<cr>
-map <leader>nt :execute 'NERDTreeToggle'<cr>
 
 vmap <Leader>em :call ExtractMethod()<CR>
 function! ExtractMethod() range
@@ -152,11 +137,47 @@ function! ExtractMethod() range
   normal! j0w
 endfunction
 
-" makes CTRL-<ENTER> leave insert mode (like Esc)
-inoremap <C-space> <Esc>
+" ==================
+" Custom mappings
+" ==================
+
 " shortcut for alt-tabbing buffers
-map <M-`> :b#<cr>
-imap <M-`> :b#<cr>
+map <leader>bn :bn
+map <leader>bp :bp
+
+" NERDTree stuff
+map <leader>nt :execute 'NERDTreeToggle'<cr>
+map <leader>nc :execute 'NERDTreeClose'<cr>
+
+"FuzzyFinder stuff
+map <leader>ff :execute 'FufFile'<cr>
+map <leader>fd :execute 'FufDir'<cr>
+map <leader>fb :execute 'FufBuf'<cr>
+
+" tab navigation like firefox
+nmap <C-S-tab> :tabprevious<cr>
+nmap <C-tab> :tabnext<cr>
+map <C-S-tab> :tabprevious<cr>
+map <C-tab> :tabnext<cr>
+imap <C-S-tab> <ESC>:tabprevious<cr>i
+imap <C-tab> <ESC>:tabnext<cr>i
+nmap <Leader> tn :tabnew<cr>
+
+" miscellaneous
+" rewrite this command when you know how to get the current line info => map <leader>rl :execute '!ruby -e \'\''<cr>
+map <leader>rc :execute '!ruby %'<cr> "execute ruby code in the current buffer
+map <C-K><C-F> :Xmlpretty<CR>
+nnoremap <silent> <F8> :TlistToggle<CR>
+
+" reformat the file
+map <leader>f gg=G<cr> 
+
+" remove search highlight
+map <leader>rh :nohls
+
+" ===================================================================== 
+" end of custom mappings
+" ===================================================================== 
 
 " TODO ============== Get this working in the right way ==========
 " set any autocmds (make sure they are only set once)
