@@ -3,3 +3,13 @@
 [user]
 	email = minhajuddin@cosmicvent.com
 	name = Khaja Minhajuddin
+[gui]
+	fontui = -family Consolas -size 12 -weight normal -slant roman -underline 0 -overstrike 0
+[diff]
+	tool = kdiff3
+[difftool]
+	prompt = 0
+[merge]
+	tool = kdiff3
+[mergetool]
+	prompt = 0
