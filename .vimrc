@@ -142,8 +142,8 @@ endfunction
 " ==================
 
 " shortcut for alt-tabbing buffers
-map <leader>bn :bn
-map <leader>bp :bp
+map <leader>bn :bn<cr>
+map <leader>bp :bp<cr>
 
 " NERDTree stuff
 map <leader>nt :execute 'NERDTreeToggle'<cr>
@@ -161,19 +161,20 @@ map <C-S-tab> :tabprevious<cr>
 map <C-tab> :tabnext<cr>
 imap <C-S-tab> <ESC>:tabprevious<cr>i
 imap <C-tab> <ESC>:tabnext<cr>i
-nmap <Leader> tn :tabnew<cr>
+nmap <Leader>tn :tabnew<cr>
 
 " miscellaneous
 " rewrite this command when you know how to get the current line info => map <leader>rl :execute '!ruby -e \'\''<cr>
-map <leader>rc :execute '!ruby %'<cr> "execute ruby code in the current buffer
+"execute ruby code in the current buffer
+map <leader>rc :execute '!ruby %'<cr> 
 map <C-K><C-F> :Xmlpretty<CR>
 nnoremap <silent> <F8> :TlistToggle<CR>
 
 " reformat the file
-map <leader>f gg=G<cr> 
+map <leader>rf gg=G<cr> 
 
 " remove search highlight
-map <leader>rh :nohls
+map <leader>rh :nohls<cr>
 
 " ===================================================================== 
 " end of custom mappings
