@@ -177,7 +177,7 @@ map <leader>rf gg=G<cr>
 map <leader>rh :nohls<cr>
 
 " change current directory to the directory of the current buffer
-nmap <silent> ,cd :lcd %:h<CR>
+nmap <silent> <leader>cd :lcd %:h<CR>
 " ===================================================================== 
 " end of custom mappings
 " ===================================================================== 
