@@ -176,6 +176,8 @@ map <leader>rf gg=G<cr>
 " remove search highlight
 map <leader>rh :nohls<cr>
 
+" change current directory to the directory of the current buffer
+nmap <silent> ,cd :lcd %:h<CR>
 " ===================================================================== 
 " end of custom mappings
 " ===================================================================== 
