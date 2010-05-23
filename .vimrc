@@ -196,6 +196,14 @@ set synmaxcol=2048
 " I don't like it when the matching parens are automatically highlighted
 let loaded_matchparen = 1
 
+" XPTemplate config stuff
+let g:xptemplate_always_show_pum=0
+let g:xptemplate_key_pum_only = '<c-Space>'
+let g:xptemplate_vars="$author=Khaja Minhajuddin"
+let g:xptemplate_vars="$email=minhajuddin@cosmicvent.com" 
+let g:xptemplate_nav_next = '<C-j>'
+let g:xptemplate_nav_prev = '<C-k>'
+
 " from another vimrc
 " Make sure that unsaved buffers that are to be put in the background are
 " allowed to go in there (ie. the "must save first" error doesn't come up)
@@ -206,7 +214,8 @@ set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
 
 " tell VIM to always put a status line in, even if there is only one window
 set laststatus=2
-
+" Make command line two lines high
+set ch=2
 " Show the current mode
 set showmode
 
@@ -255,9 +264,9 @@ set showfulltag
 " belongs to -- very useful for figuring out what to change as far as
 " syntax highlighting goes.
 nmap <silent> <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
-     \ . '> trans<' . synIDattr(synID(line("."),col("."),0),"name")
-     \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
-     \ . ">"<CR>
+      \ . '> trans<' . synIDattr(synID(line("."),col("."),0),"name")
+      \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
+      \ . ">"<CR>
 
 " set text wrapping toggles
 nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
