@@ -281,6 +281,10 @@ noremap <silent> <leader>mh <C-W>H
 noremap <silent> <leader>mj <C-W>J
 noremap <silent> <leader>cw :close<CR>
 
+" Command T settings
+map <leader>ct :CommandT<cr>
+map <leader>cf :CommandTFlush<cr>
+
 " Buffer commands
 noremap <silent> <leader>bd :bd<CR>
 
