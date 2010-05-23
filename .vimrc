@@ -109,7 +109,8 @@ au BufNewFile,BufRead *.io  setf io
 au BufNewFile,BufRead *.notes setf notes
 au BufNewFile,BufRead *.mg setf mg
 au BufNewFile,BufRead *.spark setf html
-
+au BufNewFile,BufRead *.rb colorscheme vividchalk
+au BufNewFile,BufRead *.erb colorscheme vividchalk
 " Needed for Syntax Highlighting and stuff
 syntax on " syntax hilight on
 syntax sync fromstart 
