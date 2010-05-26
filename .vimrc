@@ -275,10 +275,15 @@ nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " Run the command that was just yanked
 nmap <silent> <leader>ry :@"<cr>
 
-noremap <silent> <leader>ml <C-W>L
-noremap <silent> <leader>mk <C-W>K
-noremap <silent> <leader>mh <C-W>H
-noremap <silent> <leader>mj <C-W>J
+"Window wrangling
+noremap <silent> <leader>ml <C-W>l
+noremap <silent> <leader>mk <C-W>k
+noremap <silent> <leader>mh <C-W>h
+noremap <silent> <leader>mj <C-W>j
+noremap <silent> <leader>mL <C-W>L
+noremap <silent> <leader>mK <C-W>K
+noremap <silent> <leader>mH <C-W>H
+noremap <silent> <leader>mJ <C-W>J
 noremap <silent> <leader>cw :close<CR>
 
 " Command T settings
