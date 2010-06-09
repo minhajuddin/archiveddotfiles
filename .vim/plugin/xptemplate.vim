@@ -69,7 +69,6 @@ fun! s:SetDefaultFilters( ph )
     endif
 endfunction 
 let s:priorities = {'all' : 64, 'spec' : 48, 'like' : 32, 'lang' : 16, 'sub' : 8, 'personal' : 0}
-let s:priPtn = 'all\|spec\|like\|lang\|sub\|personal\|\d\+'
 let g:XPT_RC = {
       \   'ok' : {},
       \   'canceled' : {},
@@ -86,7 +85,9 @@ fun! s:pumCB.onEmpty(sess)
         call XPT#warn( "XPT: No snippet matches" )
         return ''
     else
-        return s:FallbackKey()
+        let x = b:xptemplateData
+        let x.fallbacks = [ [ "\<Plug>XPTfallback", 'feed' ] ] + x.fallbacks
+        return XPT#fallback( x.fallbacks )
     endif
 endfunction 
 fun! s:pumCB.onOneMatch(sess) 
@@ -561,16 +562,40 @@ fun! XPTemplateStart(pos_unused_any_more, ...)
             return leftSpaces . "\<C-r>=XPTemplateStart(0," . string( opt ) . ")\<CR>"
         endif
     endif
+    let keypressed = get( opt, 'k', g:xptemplate_key )
+    let keypressed = substitute( keypressed, '\V++', '>', 'g' )
     if pumvisible()
         if XPPhasSession()
             return XPPend() . "\<C-r>=XPTemplateStart(0," . string( opt ) . ")\<CR>"
+        else
+            if x.fallbacks == []
+                if keypressed =~ g:xptemplate_fallback_condition
+                    let x.fallbacks = [ [ "\<Plug>XPTfallback", 'feed' ] ] + x.fallbacks
+                    return XPT#fallback( x.fallbacks )
+                else
+                endif
+            else
+                if g:xptemplate_fallback =~? '\V<Plug>XPTrawKey\|<NOP>'
+                      \ || g:xptemplate_fallback ==? keypressed
+                    return XPT#fallback( x.fallbacks )
+                else
+                    let x.fallbacks = [ [ "\<Plug>XPTfallback", 'feed' ] ] + x.fallbacks
+                    return XPT#fallback( x.fallbacks )
+                endif
+            endif
         endif
     else
         if XPPhasSession()
             call XPPend()
         endif
     endif
-    let isFullMaatching = g:xptemplate_minimal_prefix is 'full'
+    let forcePum = get( opt, 'forcePum', g:xptemplate_always_show_pum )
+    if x.renderContext.processing
+        let miniPrefix = g:xptemplate_minimal_prefix_nested
+    else
+        let miniPrefix = g:xptemplate_minimal_prefix
+    endif
+    let isFullMaatching = miniPrefix is 'full'
     let cursorColumn = col(".")
     let startLineNr = line(".")
     let accEmp = 0
@@ -592,8 +617,12 @@ fun! XPTemplateStart(pos_unused_any_more, ...)
         if matched =~ '\V\W\$'
             let matched = matchstr( matched, '\V\W\+\$' )
         endif
-        if !isFullMaatching && len( matched ) < g:xptemplate_minimal_prefix
-            return s:FallbackKey()
+        if !has_key( opt, 'popupOnly' )
+            if !isFullMaatching
+                  \ && len( matched ) < miniPrefix
+                  let x.fallbacks = [ [ "\<Plug>XPTfallback", 'feed' ] ] + x.fallbacks
+                  return XPT#fallback( x.fallbacks )
+            endif
         endif
         let startColumn = col( "." ) - len( matched )
         if matched == ''
@@ -601,43 +630,31 @@ fun! XPTemplateStart(pos_unused_any_more, ...)
         endif
     endif
     let templateName = strpart( getline(startLineNr), startColumn - 1, cursorColumn - startColumn )
-    return action . s:Popup( templateName, startColumn,
+    let action = action . s:Popup( templateName, startColumn,
           \ { 'acceptEmpty'    : accEmp,
-          \   'forcePum'       : get( opt, 'forcePum', g:xptemplate_always_show_pum ), 
+          \   'forcePum'       : forcePum,
           \   'matchWholeName' : get( opt, 'popupOnly', 0 ) ? 0 : isFullMaatching } )
+    return action
 endfunction 
+let s:priPtn = 'all\|spec\|like\|lang\|sub\|personal\|\d\+'
 fun! s:ParsePriorityString(s) 
     let x = b:xptemplateData
     let pstr = a:s
     if pstr == ""
         return x.snipFileScope.priority
     endif
-    let prio = 0
-    let p = matchlist(pstr, '\V\^\(' . s:priPtn . '\)' . '\%(' . '\(\[+-]\)' . '\(\d\+\)\?\)\?\$')
-    let base   = 0
-    let r      = 1
-    let offset = 0
-    if p[1] != ""
-        if has_key(s:priorities, p[1])
-            let base = s:priorities[p[1]]
-        elseif p[1] =~ '^\d\+$'
-            let base = 0 + p[1]
-        else
-            let base = 0
-        endif
-    else
-        let base = 0
+    let newPrio = s:ParsePriority( a:s )
+    return newPrio
+endfunction 
+fun! s:ParsePriority( pstr ) 
+    let pstr = a:pstr
+    if pstr =~ '\V\[+-]\$'
+        let pstr .= '1'
     endif
-    let r = p[2] == '+'
-          \ ? 1
-          \ : ( p[2] == '-' ? -1 : 0 )
-    if p[3] != ""
-        let offset = 0 + p[3]
-    else
-        let offset = 1
-    endif
-    let prio = base + offset * r
-    return prio
+    let reg = '\V\(\w\+\|\[+-]\)\zs'
+    let prioParts = split( pstr, reg )
+    let prioParts[ 0 ] = get( s:priorities, prioParts[ 0 ], prioParts[ 0 ] - 0 )
+    return eval( join( prioParts, '' ) )
 endfunction 
 fun! s:NewRenderContext( ftScope, tmplName ) 
     let x = b:xptemplateData
@@ -670,9 +687,9 @@ fun! s:DoStart( sess )
         return ''
     endif
     let b:__xpt_snip_sess__ = a:sess
-    return "\<BS>" . s:CreateSnippet()
+    return "\<BS>" . s:RenderSnippet()
 endfunction 
-fun! s:CreateSnippet() 
+fun! s:RenderSnippet() 
     let x = b:xptemplateData
     let sess = b:__xpt_snip_sess__
     let x.savedReg = @"
@@ -702,8 +719,10 @@ fun! s:SaveNavKey()
         let mapInfo = MapSaver_GetMapInfo( navKey, 'i', 0 )
     endif
     if mapInfo.cont == ''
-        exe 'inoremap <buffer> ' '<Plug>XPTnavFallback' navKey
+        let x.canNavFallback = 0
+        exe 'inoremap <buffer> <Plug>XPTnavFallback ' navKey
     else
+        let x.canNavFallback = 1
         let mapInfo.key = '<Plug>XPTnavFallback'
         exe MapSaverGetMapCommand( mapInfo )
     endif
@@ -715,6 +734,7 @@ fun! s:FinishRendering(...)
     let isCursor = get( renderContext.item, 'name', 0 ) is 'cursor'
     call XPMremoveMarkStartWith( renderContext.markNamePre )
     if empty(x.stack)
+        let x.fallbacks = []
         let renderContext.processing = 0
         let renderContext.phase = 'finished'
         call s:ClearMap()
@@ -819,8 +839,8 @@ fun! s:ParseSpaces( snipObject )
         let raw = text[ start + 1 : end - 1 ]
         let expr = s:CachedCompileExpr( raw, renderContext.ftScope.funcs )
         if substitute( expr, 'GetVar', '', 'g' ) =~ '\V\<xfunc.\w\+('
-            let start = end + 1
-            let lastMark = text[ end ]
+            let start = end
+            let lastMark = text[ end - 1 ]
             continue
         endif
         let str = s:Eval( raw, renderContext.ftScope.funcs, { 'variables' : a:snipObject.setting.variables } )
@@ -874,8 +894,12 @@ fun! s:ParseRepetition( snipObject )
     while stack != []
         let matchpos = stack[-1]
         unlet stack[-1]
-        let bef = tmpl[:matchpos-1]
-        let rest = tmpl[matchpos : ]
+        if matchpos == 0
+            let bef = ''
+        else
+            let bef = tmpl[ : matchpos-1 ]
+        endif
+        let rest = tmpl[ matchpos : ]
         let indentNr = s:GetIndentBeforeEdge( tmplObj, bef )
         let repeatPart = matchstr(rest, repContPtn)
         let repeatPart = 'BuildIfNoChange(' . string( repeatPart ) . ')'
@@ -1123,8 +1147,10 @@ fun! s:BuildMarksOfPlaceHolder( item, placeHolder, nameInfo, valueInfo )
             let nameInfo[3][1] -= shift
         endif
         call XPreplaceInternal(nameInfo[0], valueInfo[2], placeHolder.fullname)
-    elseif nameInfo[0][0] == nameInfo[3][0]
-        let nameInfo[3][1] -= 1
+    else
+        if nameInfo[0][0] == nameInfo[3][0]
+            let nameInfo[3][1] -= 1
+        endif
         call XPreplaceInternal(nameInfo[0], valueInfo[2], placeHolder.name)
     endif
     call XPMadd( placeHolder.mark.start, nameInfo[0], 'l' )
@@ -1428,14 +1454,21 @@ fun! s:PushBackItem()
     let item.processed = 1
 endfunction 
 fun! s:ShiftForward( action ) 
+    let x = b:xptemplateData
+    let renderContext = x.renderContext
     if pumvisible()
         if XPPhasSession()
             return XPPend() . "\<C-r>=<SNR>" . s:sid . 'ShiftForward(' . string( a:action ) . ")\<CR>"
         else
             if g:xptemplate_move_even_with_pum
             else
-                call feedkeys( "\<Plug>XPTnavFallback", 'm')
-                return ''
+                if x.canNavFallback
+                    let x.fallbacks = [ [ "\<Plug>XPTnavFallback", 'feed' ],
+                          \             [ "\<C-r>=XPTforceForward(" . string( a:action ) . ")\<CR>", 'expr' ], ]
+                    return  XPT#fallback( x.fallbacks )
+                else
+                    return XPPend() . "\<C-r>=<SNR>" . s:sid . 'ShiftForward(' . string( a:action ) . ")\<CR>"
+                endif
             endif
         endif
     else
@@ -1443,6 +1476,9 @@ fun! s:ShiftForward( action )
             call XPPend()
         endif
     endif
+    return XPTforceForward( a:action )
+endfunction 
+fun! XPTforceForward( action ) 
     if s:FinishCurrent( a:action ) < 0
         return ''
     endif
@@ -2163,8 +2199,8 @@ fun! s:XPTinitMapping()
     let b:xptemplateData.settingSwitch = g:SettingSwitch.New()
     call b:xptemplateData.settingSwitch.AddList(
           \[ '&l:textwidth', '0' ],
-          \[ '&l:indentkeys', { 'exe' : 'setl indentkeys-=*<Return> | setl indentkeys-=o' } ],
-          \[ '&l:cinkeys', { 'exe' : 'setl cinkeys-=*<Return> | setl cinkeys-=o' } ],
+          \[ '&l:indentkeys', { 'exe' : 'setl indentkeys-=*<Return>' } ],
+          \[ '&l:cinkeys', { 'exe' : 'setl cinkeys-=*<Return>' } ],
           \)
     let b:xptemplateData.settingWrap = g:SettingSwitch.New()
     call b:xptemplateData.settingWrap.Add( '&l:wrap', '1' )
@@ -2262,6 +2298,7 @@ fun! XPTemplateInit()
           \     'savedReg'          : '',
           \     'snippetToParse'    : [],
           \     'abbrPrefix'        : {},
+          \     'fallbacks'         : [],
           \ }
     let b:xptemplateData.posStack = []
     let b:xptemplateData.stack = []
@@ -2556,6 +2593,9 @@ fun! s:GotoRelativePosToMark( rPos, mark )
     endif
 endfunction 
 fun! s:XPTcheck() 
+    if !exists( 'b:xptemplateData' )
+        call XPTemplateInit()
+    endif
     let x = b:xptemplateData
     if x.wrap isnot ''
         let x.wrapStartPos = 0
@@ -2647,3 +2687,4 @@ endfunction
 com! XPTreload call XPTreload()
 com! XPTcrash call <SID>Crash()
 let &cpo = s:oldcpo
+" GetLatestVimScripts: 2611 1 :AutoInstall: xpt.tgz

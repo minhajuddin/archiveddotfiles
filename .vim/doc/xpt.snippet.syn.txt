@@ -438,7 +438,10 @@
 		XSET elts=c_printfElts( R( 'pattern' ) )
 		printf( "`pattern^"`elts^ )
 
-<	NOTE XSET/XSETm commands can be placed anywhere inside a snippet.
+<	NOTE	XPTemplate use 4-spaces indent. No table-char indent is
+		allowed in snippet file.
+
+	NOTE	XSET/XSETm commands can be placed anywhere inside a snippet.
 
 
 				       *`::^* *Include:* *xpt-snippet-include*
@@ -566,6 +569,12 @@
 <	Sequentially, the place holders in this snippet are : >
 		i, 0, i, len, i, cursor
 < 
+	Note The placeholder can't contain any backslashes (\). If the default
+	value should contain any items which need to be escaped (like brackets
+	or you want to use backslashes directly), use the following syntax
+	(see |xpt-placeholder-default-value| for more information): >
+		`name^value with \() here^
+<
 					      *xpt-placeholder-left-mark*  *`*
 					     *xpt-placeholder-right-mark*  *^*
 							*xpt-placeholder-mark*
@@ -905,6 +914,18 @@
 		    `^
 		}
 <
+	NOTE If you want to use a repetition inside a |xpt-snippet-expandable|
+	you can't use the normal |`...^| placeholder. Instead use `...{{^ as
+	in the following example: >
+		`Maybe...{{^
+		With repeatable:
+		`...{{^
+		- repeat this
+		`...^
+		`}}^
+		`}}^
+<
+	The first `}}^ ends the repetition, the second the expandable.
 
 	See |xpt-repetition| for using repetition.
 
