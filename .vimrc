@@ -27,7 +27,7 @@ set bg=dark
 let g:zenburn_high_Contrast = 1
 let g:molokai_original = 0
 set t_Co=256
-colorscheme molokai
+colorscheme vividchalk
 
 "settings specific to gvim
 if has("gui_running")
@@ -198,13 +198,9 @@ set synmaxcol=2048
 let loaded_matchparen = 1
 
 " XPTemplate config stuff
-let g:xptemplate_always_show_pum=0
-let g:xptemplate_key_pum_only = '<c-Space>'
 let g:xptemplate_vars="$author=Khaja Minhajuddin"
 let g:xptemplate_vars="$email=minhajuddin@cosmicvent.com" 
-let g:xptemplate_nav_next = '<C-j>'
-let g:xptemplate_nav_prev = '<C-k>'
-
+let g:xptemplate_brace_complete = ''
 " from another vimrc
 " Make sure that unsaved buffers that are to be put in the background are
 " allowed to go in there (ie. the "must save first" error doesn't come up)
