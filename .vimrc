@@ -32,7 +32,7 @@ colorscheme vividchalk
 "settings specific to gvim
 if has("gui_running")
   " maximizes the gvim window
-  set lines=99999 columns=9999
+  set lines=999 columns=999
   " No menus and no toolbar
   set guioptions-=m
   set guioptions-=T
