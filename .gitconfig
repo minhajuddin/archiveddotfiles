@@ -13,3 +13,13 @@
 	tool = kdiff3
 [mergetool]
 	prompt = 0
+[alias]
+        c = commit -m
+        a = add .
+        s = status -s
+        f = fetch
+        p = push
+        b = branch
+        l = log
+        i = init
+        co = checkout
