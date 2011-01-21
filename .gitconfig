@@ -24,3 +24,6 @@
         i = init
         co = checkout
         m = merge
+        amend = commit --amend -C HEAD ;from http://www.jukie.net/bart/blog/git-amend
+
+
