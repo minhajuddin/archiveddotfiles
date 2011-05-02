@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/etc/nginx'
+let g:netrw_dirhist_2='/etc/init'
+let g:netrw_dirhist_3='/home/minhajuddin/repos/os/taskr'
+let g:netrw_dirhist_4='/home/minhajuddin/.rvm/gems/ruby-1.9.2-p136/gems/aweber-1.3.1'

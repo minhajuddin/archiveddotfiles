@@ -21,12 +21,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require 'mkmf'
-
-def missing item
-  puts "couldn't find #{item} (required)"
-  exit 1
-end
-
-have_header('ruby.h') or missing('ruby.h')
-create_makefile('ext')
+module CommandT
+  module VIM
+    module Screen
+      def self.lines
+        ::VIM::evaluate('&lines').to_i
+      end
+    end # module Screen
+  end # module VIM
+end # module CommandT

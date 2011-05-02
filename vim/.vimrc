@@ -44,6 +44,9 @@ endif
 " This shows what you are typing as a command. I love this!
 set showcmd
 
+" vimdiff stuff
+set diffopt+=iwhite
+
 " Folding Stuffs ==> TODO:Need to set it to a more meaningful value
 set foldmethod=marker
 
@@ -96,6 +99,7 @@ set fileencoding=utf8
 let g:Tlist_Inc_Winwidth = 0
 
 " set custom file types I've configured
+au BufNewFile,BufRead *.ru  setf ruby
 au BufNewFile,BufRead *.ps1  setf ps1
 au BufNewFile,BufRead *.boo  setf boo
 au BufNewFile,BufRead *.config  setf xml
@@ -114,7 +118,14 @@ au BufNewFile,BufRead *.erb colorscheme vividchalk
 " Needed for Syntax Highlighting and stuff
 syntax on " syntax hilight on
 syntax sync fromstart 
+
+" pathogen stuff
+filetype off
+call pathogen#runtime_append_all_bundles()
 filetype plugin indent on
+
+" coffee script
+let coffee_compile_on_save = 1
 
 "xmlpretty
 runtime xmlpretty.vim
@@ -321,3 +332,6 @@ noremap <silent> <leader>bd :bd<CR>
 "imap <silent> <F1> <ESC>:call OnlineDoc()<CR>
 
 " TODO ============== Get this working in the right way ==========
+"
+
+
