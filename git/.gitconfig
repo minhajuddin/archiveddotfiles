@@ -6,7 +6,7 @@
 [gui]
 	fontui = -family Consolas -size 12 -weight normal -slant roman -underline 0 -overstrike 0
 [diff]
-	tool = kdiff3
+	tool = vimdiff
 [difftool]
 	prompt = 0
 [merge]
@@ -24,6 +24,8 @@
         i = init
         co = checkout
         m = merge
-        amend = commit --amend -C HEAD ;from http://www.jukie.net/bart/blog/git-amend
-
-
+        d = difftool
+        amend = commit --amend -C HEAD
+        ll = log --oneline -1
+        lg = log --all --graph
+        
