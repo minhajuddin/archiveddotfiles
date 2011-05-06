@@ -1,2 +1,2 @@
 require 'rubygems'
-require 'irb/helpers'
+require '~/.irb/helpers'
