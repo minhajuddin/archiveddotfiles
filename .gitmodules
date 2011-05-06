@@ -1,0 +1,3 @@
+[submodule "vim/.vim/bundle/mustache"]
+	path = vim/.vim/bundle/mustache
+	url = git://github.com/juvenn/mustache.vim.git
