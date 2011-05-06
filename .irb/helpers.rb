@@ -1,3 +1,4 @@
 def log_to_console
-  Logger.new(STDOUT)
+  ActiveRecord::Base.logger = Logger.new(STDOUT)
+  ActionController::Base.logger = Logger.new(STDOUT)
 end
