@@ -209,8 +209,7 @@ set synmaxcol=2048
 let loaded_matchparen = 1
 
 " XPTemplate config stuff
-let g:xptemplate_vars="$author=Khaja Minhajuddin"
-let g:xptemplate_vars="$email=minhajuddin@cosmicvent.com" 
+let g:xptemplate_vars="author=Khaja Minhajuddin&email=minhajuddin.k@gmail.com"
 let g:xptemplate_brace_complete = ''
 let g:xptemplate_key = '<Tab>'
 let g:xptemplate_key_pum_only = '<S-Tab>'

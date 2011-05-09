@@ -1,5 +1,4 @@
-alias mongod='/home/minhajuddin/apps/mongodb-linux-x86_64-1.6.5/bin/mongod --dbpath=/home/minhajuddin/dbs/'
-alias mongo='/home/minhajuddin/apps/mongodb-linux-x86_64-1.6.5/bin/mongo'
+alias mongod='mongod --dbpath=/home/minhajuddin/dbs/'
 
 alias g='gvim --remote-silent'
 
