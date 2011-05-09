@@ -153,13 +153,13 @@ endfunction
 " Custom mappings
 " ==================
 
-" shortcut for alt-tabbing buffers
-map <leader>bn :bn<cr>
-map <leader>bp :bp<cr>
-
 " NERDTree stuff
 map <leader>nt :execute 'NERDTreeToggle'<cr>
 map <leader>nc :execute 'NERDTreeClose'<cr>
+map <leader>nn :execute 'NERDTree'<cr>
+
+" js beautify
+nnoremap <silent> <leader>rj :call g:Jsbeautify()<cr>
 
 "FuzzyFinder stuff
 map <leader>ff :execute 'FufFile'<cr>
@@ -167,13 +167,13 @@ map <leader>fd :execute 'FufDir'<cr>
 map <leader>fb :execute 'FufBuf'<cr>
 
 " tab navigation like firefox
-nmap <C-S-tab> :tabprevious<cr>
-nmap <C-tab> :tabnext<cr>
-map <C-S-tab> :tabprevious<cr>
-map <C-tab> :tabnext<cr>
-imap <C-S-tab> <ESC>:tabprevious<cr>i
-imap <C-tab> <ESC>:tabnext<cr>i
-nmap <leader>tn :tabnew<cr>
+nmap <C-S-tab> :bprevious<cr>
+nmap <C-tab> :bnext<cr>
+map <C-S-tab> :bprevious<cr>
+map <C-tab> :bnext<cr>
+imap <C-S-tab> <ESC>:bprevious<cr>i
+imap <C-tab> <ESC>:bnext<cr>i
+nmap <C-n> :tabnew<cr>
 
 " miscellaneous
 " rewrite this command when you know how to get the current line info => map <leader>rl :execute '!ruby -e \'\''<cr>
@@ -284,7 +284,7 @@ nmap <silent> <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
       \ . ">"<CR>
 
 " set text wrapping toggles
-nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+nmap <silent> <leader>wt :set invwrap<CR>:set wrap?<CR>
 
 " Run the command that was just yanked
 nmap <silent> <leader>ry :@"<cr>
@@ -301,7 +301,7 @@ noremap <silent> <leader>mJ <C-W>J
 noremap <silent> <leader>cw :close<CR>
 
 " Command T settings
-map <leader>ct :CommandT<cr>
+map <leader>t :CommandT<cr>
 map <leader>cf :CommandTFlush<cr>
 
 " Buffer commands
