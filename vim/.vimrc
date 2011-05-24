@@ -99,6 +99,9 @@ set fileencoding=utf8
 " Make sure taglist doesn't change the window size
 let g:Tlist_Inc_Winwidth = 0
 
+" ack
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+
 " set custom file types I've configured
 au BufNewFile,BufRead *.ru  setf ruby
 au BufNewFile,BufRead *.ps1  setf ps1
