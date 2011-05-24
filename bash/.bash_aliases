@@ -25,3 +25,4 @@ alias j='jobs'
 alias hd='git push heroku $(git symbolic-ref -q HEAD):master'
 alias rails-edge='~/repos/os/rails/bin/rails'
 alias ll='ls -hlF'
+alias c="/opt/google/chrome/google-chrome %U"
