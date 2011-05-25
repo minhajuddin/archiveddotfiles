@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-dirs = %w(bash/.bash_aliases bash/.inputrc git/.gitconfig vim/.vim vim/.vimrc .gemrc .irb/.irbrc .irb .xmonad)
+dirs = %w(bash/.bash_aliases bash/.inputrc git/.gitconfig vim/.vim vim/.vimrc .gemrc .irb/.irbrc .irb .xmonad .fonts.conf)
 current_dir = File.expand_path(Dir.pwd)
 home_dir = File.expand_path("~")
 
