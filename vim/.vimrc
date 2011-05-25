@@ -32,7 +32,7 @@ colorscheme vividchalk
 "settings specific to gvim
 if has("gui_running")
   " maximizes the gvim window
-  "set guifont=Bitstream\ Vera\ Sans\ Mono\ 10 
+  set guifont=Consolas\ 12
   set lines=999 columns=999
   " No menus and no toolbar
   set guioptions-=m
